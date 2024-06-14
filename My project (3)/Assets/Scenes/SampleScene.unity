@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 1527907241}
   - component: {fileID: 1527907240}
   - component: {fileID: 1527907242}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1275,7 +1275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550558641}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.19, y: 11.95, z: 0}
+  m_LocalPosition: {x: 2.82, y: 5.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1297,7 +1297,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1308,7 +1308,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &1550558646
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1356,3 +1356,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a0843817232604782cc38a3581ecb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpForce: 5
+  moveSpeed: 5
+  showGoundCheck: 1
+  groundCheckLength: 0.68
+  colorGroundCheck: {r: 1, g: 0, b: 0, a: 1}
+  isGround: 0

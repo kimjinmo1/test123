@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Xml.Serialization;
 
 public class MoveControllor : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class MoveControllor : MonoBehaviour
 
 
     [SerializeField] bool isGround;//인스펙터에서 플레이어가 플랫폼타일에 착지 했는지
+    bool isJump;
 
     private void OnDrawGizmos()
     {
@@ -38,6 +40,7 @@ public class MoveControllor : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
 
@@ -53,14 +56,26 @@ public class MoveControllor : MonoBehaviour
         checkGrounded();
 
         moving();
+        jump();
+        checkGravity();
+
+        doAnim();
     }
 
     private void checkGrounded()
     {
-        if(gameObject.CompareTag("Player")== true)//태그는 string 으롷 대상의 태그를 구분
-        {
 
+        isGround = false;
+
+        if(verticalVelocity > 0f)
+        {
+             return;
         }
+
+        //if(gameObject.CompareTag("Player")== true)//태그는 string 으롷 대상의 태그를 구분
+        //{
+
+        //}
 
         //Layer int 로 대상의 레이어를 구분
         //Layer의 int 와 공통적으로 활용하는 ont와 다름
@@ -72,10 +87,6 @@ public class MoveControllor : MonoBehaviour
         {
             isGround = true;
         }
-        else
-        {
-            isGround = false;
-        } 
     }
 
 
@@ -87,7 +98,52 @@ public class MoveControllor : MonoBehaviour
         //슈팅게임 만들때는 오브젝트를 코드에 의해서 순간이동 하게 만들었지만 
         //물리에의해서 이동
         rigid.velocity = moveDir;//y 0 
+    }
 
-       
+    private void jump()
+    {
+        //if (isGround == true && isJump == false && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    rigid.AddForce(new Vector2(0 , jumpForce), ForceMode2D.Impulse);//지긋이 미는 힘
+        //    isJump = true;
+        //}
+
+        if (isGround == false)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Space) == true)
+        {
+            isJump = true;
+        }
+    }
+
+    private void checkGravity()
+    {
+        if(isGround == false)//공중에 떠있는 상태
+        {
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;//-9.81 
+
+            if(verticalVelocity < -10f)
+            {
+                verticalVelocity = -10f;
+            }
+        }
+        else if ( isJump == true)
+        {
+            isJump = false;
+            verticalVelocity = jumpForce;
+        }
+        else if(isGround == true)
+        {
+            verticalVelocity = 0;
+        }
+
+        rigid.velocity = new Vector2(rigid.velocity.x, verticalVelocity);
+    }
+    private void doAnim()
+    {
+        anim.SetInteger("Horizontal", (int)moveDir.x);
+        anim.SetBool("IsGroind", isGround);
     }
 }
