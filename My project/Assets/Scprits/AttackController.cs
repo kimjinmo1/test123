@@ -6,7 +6,8 @@ public class AttackController : MonoBehaviour
 {
     Camera mainCam;
     [SerializeField] Transform trsHand;
-
+    [SerializeField] GameObject objThrowWaepon;
+    [SerializeField] Transform trsWeapon;
     private void Start()
     {
         mainCam = Camera.main;//메인카메라
@@ -17,6 +18,7 @@ public class AttackController : MonoBehaviour
     void Update()
     {
         checkAim();
+        
     }
 
     private void checkAim()
@@ -27,8 +29,23 @@ public class AttackController : MonoBehaviour
 
         //fixedPos.x > 0 또는 transform. localScale. x -1 => 오른쪽 , 1 => 왼쪽
 
-        float angle = Quaternion.FromToRotation(Vector3.left , fixedPos).eulerAngles.z;
+        float angle = Quaternion.FromToRotation(
+             transform.localScale.x < 0 ? Vector3.right : Vector3.left
+             , fixedPos).eulerAngles.z;
         trsHand. rotation = Quaternion.Euler(0, 0 ,angle );
 
      }
+
+    private void CheckCreate()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            createWeapon();
+        }
+    }
+
+    private void createWeapon()
+    {
+        //GameObject go = Instantiate(objThrowWaepon, );
+    }
 }
