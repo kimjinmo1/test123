@@ -8,6 +8,8 @@ public class AttackController : MonoBehaviour
     [SerializeField] Transform trsHand;
     [SerializeField] GameObject objThrowWaepon;
     [SerializeField] Transform trsWeapon;
+    [SerializeField] Transform trsDynamic;
+    [SerializeField] Vector2 throwforce = new Vector2(10f, 0f);
     private void Start()
     {
         mainCam = Camera.main;//메인카메라
@@ -18,6 +20,7 @@ public class AttackController : MonoBehaviour
     void Update()
     {
         checkAim();
+        CheckCreate();
         
     }
 
@@ -46,6 +49,16 @@ public class AttackController : MonoBehaviour
 
     private void createWeapon()
     {
-        //GameObject go = Instantiate(objThrowWaepon, );
+        GameObject go = Instantiate(objThrowWaepon, trsWeapon.position, trsWeapon.rotation, trsDynamic);
+        Throwweapon goSc =go.GetComponent<Throwweapon>();
+        bool isRight = transform.localScale.x < 0 ? true : false;
+        Vector2 fixedThrowForce = throwforce;
+        if(isRight == false)
+        {
+            fixedThrowForce = -throwforce;//x10 y0
+        }
+
+        goSc.SetForce(trsWeapon.rotation * fixedThrowForce, isRight);
+
     }
 }
